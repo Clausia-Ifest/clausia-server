@@ -1,0 +1,6 @@
+CREATE TABLE documents (
+    hash CHAR(64) PRIMARY KEY,
+    meta_data TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
