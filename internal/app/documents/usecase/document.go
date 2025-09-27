@@ -61,6 +61,7 @@ func (u *UDocument) Extract(ctx context.Context, document *multipart.FileHeader)
 			},
 		})
 		if err != nil {
+			log.Err(err).Msg("error nih bang")
 			return nil, err
 		}
 

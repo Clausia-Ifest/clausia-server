@@ -28,5 +28,5 @@ func (h *HDocument) MountRoutes(router fiber.Router) {
 	documents := router.Group("/documents")
 
 	documents.Use(h.m.RequiredAuth)
-	documents.Post("/", h.m.RequiredRoles("Admin"), timeout.NewWithContext(h.Extract, 10*time.Second))
+	documents.Post("/", h.m.RequiredRoles("Admin"), timeout.NewWithContext(h.Extract, 30*time.Second))
 }
