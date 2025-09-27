@@ -30,5 +30,11 @@ func (h *HContract) MountRoutes(router fiber.Router) {
 	contracts.Use(h.m.RequiredAuth)
 	contracts.Post("/", h.m.RequiredRoles("Admin"), timeout.NewWithContext(h.SubmitContract, 10*time.Second))
 	contracts.Get("/", h.m.RequiredRoles("Admin", "Legal", "Manager"), timeout.NewWithContext(h.All, 3*time.Second))
-	contracts.Patch("/:id", h.m.RequiredRoles("Legal"), timeout.NewWithContext(h.Update, 3*time.Second))
+	contracts.Get("/:id", h.m.RequiredRoles("Legal"), timeout.NewWithContext(h.Get, 3*time.Second))
+	contracts.Patch("/:id", h.m.RequiredRoles("Legal", "Manager"), timeout.NewWithContext(h.Update, 3*time.Second))
+
+	logs := contracts.Group("/logs")
+	logs.Get("/", h.m.RequiredRoles("Admin"), timeout.NewWithContext(h.Logs, 3*time.Second))
+
+	contracts.Post("/:id/chat", h.m.RequiredRoles("Legal"), timeout.NewWithContext(h.Chat, 3*time.Second))
 }

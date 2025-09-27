@@ -9,6 +9,34 @@ import (
 	"github.com/google/uuid"
 )
 
+func (h *HContract) Chat(c *fiber.Ctx) error {
+	ctx := c.UserContext()
+
+	var req dto.ChatRequest
+	if err := c.BodyParser(&req); err != nil {
+		return err
+	}
+
+	var err error
+
+	req.ContractID, err = uuid.Parse(c.Params("id"))
+	if err != nil {
+		return err
+	}
+
+	p, err := h.uc.Chat(ctx, req)
+	if err != nil {
+		return err
+	}
+
+	return c.Status(http.StatusOK).JSON(p)
+}
+
+func (h *HContract) Logs(c *fiber.Ctx) error {
+
+	return nil
+}
+
 func (h *HContract) SubmitContract(c *fiber.Ctx) error {
 	ctx := c.UserContext()
 
@@ -82,6 +110,13 @@ func (h *HContract) Update(c *fiber.Ctx) error {
 		return err
 	}
 
+	var ok bool
+
+	req.UserRole, ok = c.Locals("user.role").(string)
+	if !ok {
+		return errors.New("failed to get user's role")
+	}
+
 	if err := h.uc.Update(ctx, req); err != nil {
 		return err
 	}
@@ -89,4 +124,20 @@ func (h *HContract) Update(c *fiber.Ctx) error {
 	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"message": "OK",
 	})
+}
+
+func (h *HContract) Get(c *fiber.Ctx) error {
+	ctx := c.UserContext()
+
+	id, err := uuid.Parse(c.Params("id"))
+	if err != nil {
+		return err
+	}
+
+	p, err := h.uc.Get(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	return c.Status(http.StatusOK).JSON(p)
 }
