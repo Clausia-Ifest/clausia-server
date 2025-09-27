@@ -33,7 +33,7 @@ const (
 type ClausIAClient interface {
 	Extract(ctx context.Context, in *ExtractRequest, opts ...grpc.CallOption) (*ExtractResponse, error)
 	ExtractMetadata(ctx context.Context, in *ExtractRequest, opts ...grpc.CallOption) (*ExtractMetadataResponse, error)
-	Summarize(ctx context.Context, in *ExtractRequest, opts ...grpc.CallOption) (*SummarizeResponse, error)
+	Summarize(ctx context.Context, in *SummarizeRequest, opts ...grpc.CallOption) (*SummarizeResponse, error)
 	AnalyzeRisk(ctx context.Context, in *ExtractRequest, opts ...grpc.CallOption) (*AnalyzeRiskResponse, error)
 	CheckCompliance(ctx context.Context, in *ExtractRequest, opts ...grpc.CallOption) (*CheckComplianceResponse, error)
 	Chat(ctx context.Context, in *ChatRequest, opts ...grpc.CallOption) (*ChatResponse, error)
@@ -67,7 +67,7 @@ func (c *clausIAClient) ExtractMetadata(ctx context.Context, in *ExtractRequest,
 	return out, nil
 }
 
-func (c *clausIAClient) Summarize(ctx context.Context, in *ExtractRequest, opts ...grpc.CallOption) (*SummarizeResponse, error) {
+func (c *clausIAClient) Summarize(ctx context.Context, in *SummarizeRequest, opts ...grpc.CallOption) (*SummarizeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SummarizeResponse)
 	err := c.cc.Invoke(ctx, ClausIA_Summarize_FullMethodName, in, out, cOpts...)
@@ -113,7 +113,7 @@ func (c *clausIAClient) Chat(ctx context.Context, in *ChatRequest, opts ...grpc.
 type ClausIAServer interface {
 	Extract(context.Context, *ExtractRequest) (*ExtractResponse, error)
 	ExtractMetadata(context.Context, *ExtractRequest) (*ExtractMetadataResponse, error)
-	Summarize(context.Context, *ExtractRequest) (*SummarizeResponse, error)
+	Summarize(context.Context, *SummarizeRequest) (*SummarizeResponse, error)
 	AnalyzeRisk(context.Context, *ExtractRequest) (*AnalyzeRiskResponse, error)
 	CheckCompliance(context.Context, *ExtractRequest) (*CheckComplianceResponse, error)
 	Chat(context.Context, *ChatRequest) (*ChatResponse, error)
@@ -133,7 +133,7 @@ func (UnimplementedClausIAServer) Extract(context.Context, *ExtractRequest) (*Ex
 func (UnimplementedClausIAServer) ExtractMetadata(context.Context, *ExtractRequest) (*ExtractMetadataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExtractMetadata not implemented")
 }
-func (UnimplementedClausIAServer) Summarize(context.Context, *ExtractRequest) (*SummarizeResponse, error) {
+func (UnimplementedClausIAServer) Summarize(context.Context, *SummarizeRequest) (*SummarizeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Summarize not implemented")
 }
 func (UnimplementedClausIAServer) AnalyzeRisk(context.Context, *ExtractRequest) (*AnalyzeRiskResponse, error) {
@@ -203,7 +203,7 @@ func _ClausIA_ExtractMetadata_Handler(srv interface{}, ctx context.Context, dec 
 }
 
 func _ClausIA_Summarize_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ExtractRequest)
+	in := new(SummarizeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -215,7 +215,7 @@ func _ClausIA_Summarize_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: ClausIA_Summarize_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClausIAServer).Summarize(ctx, req.(*ExtractRequest))
+		return srv.(ClausIAServer).Summarize(ctx, req.(*SummarizeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

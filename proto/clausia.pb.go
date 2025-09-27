@@ -379,6 +379,50 @@ func (x *ExtractMetadataResponse) GetContent() string {
 	return ""
 }
 
+type SummarizeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ContractId    string                 `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"` // ID kontrak untuk mengambil content dari database
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizeRequest) Reset() {
+	*x = SummarizeRequest{}
+	mi := &file_clausia_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizeRequest) ProtoMessage() {}
+
+func (x *SummarizeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_clausia_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizeRequest.ProtoReflect.Descriptor instead.
+func (*SummarizeRequest) Descriptor() ([]byte, []int) {
+	return file_clausia_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *SummarizeRequest) GetContractId() string {
+	if x != nil {
+		return x.ContractId
+	}
+	return ""
+}
+
 type SummarizeResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Summary       string                 `protobuf:"bytes,1,opt,name=summary,proto3" json:"summary,omitempty"`
@@ -388,7 +432,7 @@ type SummarizeResponse struct {
 
 func (x *SummarizeResponse) Reset() {
 	*x = SummarizeResponse{}
-	mi := &file_clausia_proto_msgTypes[6]
+	mi := &file_clausia_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -400,7 +444,7 @@ func (x *SummarizeResponse) String() string {
 func (*SummarizeResponse) ProtoMessage() {}
 
 func (x *SummarizeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_clausia_proto_msgTypes[6]
+	mi := &file_clausia_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -413,7 +457,7 @@ func (x *SummarizeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SummarizeResponse.ProtoReflect.Descriptor instead.
 func (*SummarizeResponse) Descriptor() ([]byte, []int) {
-	return file_clausia_proto_rawDescGZIP(), []int{6}
+	return file_clausia_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *SummarizeResponse) GetSummary() string {
@@ -435,7 +479,7 @@ type RiskFinding struct {
 
 func (x *RiskFinding) Reset() {
 	*x = RiskFinding{}
-	mi := &file_clausia_proto_msgTypes[7]
+	mi := &file_clausia_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -447,7 +491,7 @@ func (x *RiskFinding) String() string {
 func (*RiskFinding) ProtoMessage() {}
 
 func (x *RiskFinding) ProtoReflect() protoreflect.Message {
-	mi := &file_clausia_proto_msgTypes[7]
+	mi := &file_clausia_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -460,7 +504,7 @@ func (x *RiskFinding) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RiskFinding.ProtoReflect.Descriptor instead.
 func (*RiskFinding) Descriptor() ([]byte, []int) {
-	return file_clausia_proto_rawDescGZIP(), []int{7}
+	return file_clausia_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *RiskFinding) GetClauseText() string {
@@ -497,13 +541,14 @@ type AnalyzeRiskResponse struct {
 	Low           int32                  `protobuf:"varint,2,opt,name=low,proto3" json:"low,omitempty"`
 	Medium        int32                  `protobuf:"varint,3,opt,name=medium,proto3" json:"medium,omitempty"`
 	High          int32                  `protobuf:"varint,4,opt,name=high,proto3" json:"high,omitempty"`
+	RiskLevel     int32                  `protobuf:"varint,5,opt,name=risk_level,json=riskLevel,proto3" json:"risk_level,omitempty"` // 1=Low, 2=Medium, 3=High (overall assessment)
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AnalyzeRiskResponse) Reset() {
 	*x = AnalyzeRiskResponse{}
-	mi := &file_clausia_proto_msgTypes[8]
+	mi := &file_clausia_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -515,7 +560,7 @@ func (x *AnalyzeRiskResponse) String() string {
 func (*AnalyzeRiskResponse) ProtoMessage() {}
 
 func (x *AnalyzeRiskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_clausia_proto_msgTypes[8]
+	mi := &file_clausia_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -528,7 +573,7 @@ func (x *AnalyzeRiskResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyzeRiskResponse.ProtoReflect.Descriptor instead.
 func (*AnalyzeRiskResponse) Descriptor() ([]byte, []int) {
-	return file_clausia_proto_rawDescGZIP(), []int{8}
+	return file_clausia_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *AnalyzeRiskResponse) GetFindings() []*RiskFinding {
@@ -559,6 +604,13 @@ func (x *AnalyzeRiskResponse) GetHigh() int32 {
 	return 0
 }
 
+func (x *AnalyzeRiskResponse) GetRiskLevel() int32 {
+	if x != nil {
+		return x.RiskLevel
+	}
+	return 0
+}
+
 type ComplianceMatch struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PolicyId      string                 `protobuf:"bytes,1,opt,name=policy_id,json=policyId,proto3" json:"policy_id,omitempty"`
@@ -572,7 +624,7 @@ type ComplianceMatch struct {
 
 func (x *ComplianceMatch) Reset() {
 	*x = ComplianceMatch{}
-	mi := &file_clausia_proto_msgTypes[9]
+	mi := &file_clausia_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -584,7 +636,7 @@ func (x *ComplianceMatch) String() string {
 func (*ComplianceMatch) ProtoMessage() {}
 
 func (x *ComplianceMatch) ProtoReflect() protoreflect.Message {
-	mi := &file_clausia_proto_msgTypes[9]
+	mi := &file_clausia_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -597,7 +649,7 @@ func (x *ComplianceMatch) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ComplianceMatch.ProtoReflect.Descriptor instead.
 func (*ComplianceMatch) Descriptor() ([]byte, []int) {
-	return file_clausia_proto_rawDescGZIP(), []int{9}
+	return file_clausia_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ComplianceMatch) GetPolicyId() string {
@@ -647,7 +699,7 @@ type CheckComplianceResponse struct {
 
 func (x *CheckComplianceResponse) Reset() {
 	*x = CheckComplianceResponse{}
-	mi := &file_clausia_proto_msgTypes[10]
+	mi := &file_clausia_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -659,7 +711,7 @@ func (x *CheckComplianceResponse) String() string {
 func (*CheckComplianceResponse) ProtoMessage() {}
 
 func (x *CheckComplianceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_clausia_proto_msgTypes[10]
+	mi := &file_clausia_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -672,7 +724,7 @@ func (x *CheckComplianceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckComplianceResponse.ProtoReflect.Descriptor instead.
 func (*CheckComplianceResponse) Descriptor() ([]byte, []int) {
-	return file_clausia_proto_rawDescGZIP(), []int{10}
+	return file_clausia_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CheckComplianceResponse) GetMatches() []*ComplianceMatch {
@@ -704,21 +756,17 @@ func (x *CheckComplianceResponse) GetNonCompliant() int32 {
 }
 
 type ChatRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to Source:
-	//
-	//	*ChatRequest_File
-	//	*ChatRequest_S3Ref
-	Source        isChatRequest_Source `protobuf_oneof:"source"`
-	Question      string               `protobuf:"bytes,3,opt,name=question,proto3" json:"question,omitempty"`
-	SessionId     string               `protobuf:"bytes,5,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"` // maintain chat session across turns
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ContractId    string                 `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"` // ID kontrak untuk mengambil content dari database
+	Question      string                 `protobuf:"bytes,2,opt,name=question,proto3" json:"question,omitempty"`
+	SessionId     string                 `protobuf:"bytes,3,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"` // maintain chat session across turns
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ChatRequest) Reset() {
 	*x = ChatRequest{}
-	mi := &file_clausia_proto_msgTypes[11]
+	mi := &file_clausia_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -730,7 +778,7 @@ func (x *ChatRequest) String() string {
 func (*ChatRequest) ProtoMessage() {}
 
 func (x *ChatRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_clausia_proto_msgTypes[11]
+	mi := &file_clausia_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -743,32 +791,14 @@ func (x *ChatRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChatRequest.ProtoReflect.Descriptor instead.
 func (*ChatRequest) Descriptor() ([]byte, []int) {
-	return file_clausia_proto_rawDescGZIP(), []int{11}
+	return file_clausia_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *ChatRequest) GetSource() isChatRequest_Source {
+func (x *ChatRequest) GetContractId() string {
 	if x != nil {
-		return x.Source
+		return x.ContractId
 	}
-	return nil
-}
-
-func (x *ChatRequest) GetFile() *FileContent {
-	if x != nil {
-		if x, ok := x.Source.(*ChatRequest_File); ok {
-			return x.File
-		}
-	}
-	return nil
-}
-
-func (x *ChatRequest) GetS3Ref() *S3Reference {
-	if x != nil {
-		if x, ok := x.Source.(*ChatRequest_S3Ref); ok {
-			return x.S3Ref
-		}
-	}
-	return nil
+	return ""
 }
 
 func (x *ChatRequest) GetQuestion() string {
@@ -785,22 +815,6 @@ func (x *ChatRequest) GetSessionId() string {
 	return ""
 }
 
-type isChatRequest_Source interface {
-	isChatRequest_Source()
-}
-
-type ChatRequest_File struct {
-	File *FileContent `protobuf:"bytes,1,opt,name=file,proto3,oneof"` // direct file upload (existing)
-}
-
-type ChatRequest_S3Ref struct {
-	S3Ref *S3Reference `protobuf:"bytes,4,opt,name=s3_ref,json=s3Ref,proto3,oneof"` // S3 object reference (new)
-}
-
-func (*ChatRequest_File) isChatRequest_Source() {}
-
-func (*ChatRequest_S3Ref) isChatRequest_Source() {}
-
 type ChatResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Answer        string                 `protobuf:"bytes,1,opt,name=answer,proto3" json:"answer,omitempty"`
@@ -810,7 +824,7 @@ type ChatResponse struct {
 
 func (x *ChatResponse) Reset() {
 	*x = ChatResponse{}
-	mi := &file_clausia_proto_msgTypes[12]
+	mi := &file_clausia_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -822,7 +836,7 @@ func (x *ChatResponse) String() string {
 func (*ChatResponse) ProtoMessage() {}
 
 func (x *ChatResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_clausia_proto_msgTypes[12]
+	mi := &file_clausia_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -835,7 +849,7 @@ func (x *ChatResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChatResponse.ProtoReflect.Descriptor instead.
 func (*ChatResponse) Descriptor() ([]byte, []int) {
-	return file_clausia_proto_rawDescGZIP(), []int{12}
+	return file_clausia_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ChatResponse) GetAnswer() string {
@@ -871,7 +885,10 @@ const file_clausia_proto_rawDesc = "" +
 	"\x04text\x18\x01 \x01(\tR\x04text\"O\n" +
 	"\x17ExtractMetadataResponse\x12\x1a\n" +
 	"\bmetadata\x18\x01 \x01(\tR\bmetadata\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\tR\acontent\"-\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\"3\n" +
+	"\x10SummarizeRequest\x12\x1f\n" +
+	"\vcontract_id\x18\x01 \x01(\tR\n" +
+	"contractId\"-\n" +
 	"\x11SummarizeResponse\x12\x18\n" +
 	"\asummary\x18\x01 \x01(\tR\asummary\"\x85\x01\n" +
 	"\vRiskFinding\x12\x1f\n" +
@@ -879,12 +896,14 @@ const file_clausia_proto_rawDesc = "" +
 	"clauseText\x12\x1b\n" +
 	"\trisk_type\x18\x02 \x01(\tR\briskType\x12\x1a\n" +
 	"\bseverity\x18\x03 \x01(\tR\bseverity\x12\x1c\n" +
-	"\trationale\x18\x04 \x01(\tR\trationale\"\x85\x01\n" +
+	"\trationale\x18\x04 \x01(\tR\trationale\"\xa4\x01\n" +
 	"\x13AnalyzeRiskResponse\x120\n" +
 	"\bfindings\x18\x01 \x03(\v2\x14.clausia.RiskFindingR\bfindings\x12\x10\n" +
 	"\x03low\x18\x02 \x01(\x05R\x03low\x12\x16\n" +
 	"\x06medium\x18\x03 \x01(\x05R\x06medium\x12\x12\n" +
-	"\x04high\x18\x04 \x01(\x05R\x04high\"\x97\x01\n" +
+	"\x04high\x18\x04 \x01(\x05R\x04high\x12\x1d\n" +
+	"\n" +
+	"risk_level\x18\x05 \x01(\x05R\triskLevel\"\x97\x01\n" +
 	"\x0fComplianceMatch\x12\x1b\n" +
 	"\tpolicy_id\x18\x01 \x01(\tR\bpolicyId\x12\x1f\n" +
 	"\vpolicy_name\x18\x02 \x01(\tR\n" +
@@ -896,20 +915,19 @@ const file_clausia_proto_rawDesc = "" +
 	"\amatches\x18\x01 \x03(\v2\x18.clausia.ComplianceMatchR\amatches\x12\x1c\n" +
 	"\tcompliant\x18\x02 \x01(\x05R\tcompliant\x12\x18\n" +
 	"\apartial\x18\x03 \x01(\x05R\apartial\x12#\n" +
-	"\rnon_compliant\x18\x04 \x01(\x05R\fnonCompliant\"\xad\x01\n" +
-	"\vChatRequest\x12*\n" +
-	"\x04file\x18\x01 \x01(\v2\x14.clausia.FileContentH\x00R\x04file\x12-\n" +
-	"\x06s3_ref\x18\x04 \x01(\v2\x14.clausia.S3ReferenceH\x00R\x05s3Ref\x12\x1a\n" +
-	"\bquestion\x18\x03 \x01(\tR\bquestion\x12\x1d\n" +
+	"\rnon_compliant\x18\x04 \x01(\x05R\fnonCompliant\"i\n" +
+	"\vChatRequest\x12\x1f\n" +
+	"\vcontract_id\x18\x01 \x01(\tR\n" +
+	"contractId\x12\x1a\n" +
+	"\bquestion\x18\x02 \x01(\tR\bquestion\x12\x1d\n" +
 	"\n" +
-	"session_id\x18\x05 \x01(\tR\tsessionIdB\b\n" +
-	"\x06source\"&\n" +
+	"session_id\x18\x03 \x01(\tR\tsessionId\"&\n" +
 	"\fChatResponse\x12\x16\n" +
-	"\x06answer\x18\x01 \x01(\tR\x06answer2\xa0\x03\n" +
+	"\x06answer\x18\x01 \x01(\tR\x06answer2\xa2\x03\n" +
 	"\aClausIA\x12<\n" +
 	"\aExtract\x12\x17.clausia.ExtractRequest\x1a\x18.clausia.ExtractResponse\x12L\n" +
-	"\x0fExtractMetadata\x12\x17.clausia.ExtractRequest\x1a .clausia.ExtractMetadataResponse\x12@\n" +
-	"\tSummarize\x12\x17.clausia.ExtractRequest\x1a\x1a.clausia.SummarizeResponse\x12D\n" +
+	"\x0fExtractMetadata\x12\x17.clausia.ExtractRequest\x1a .clausia.ExtractMetadataResponse\x12B\n" +
+	"\tSummarize\x12\x19.clausia.SummarizeRequest\x1a\x1a.clausia.SummarizeResponse\x12D\n" +
 	"\vAnalyzeRisk\x12\x17.clausia.ExtractRequest\x1a\x1c.clausia.AnalyzeRiskResponse\x12L\n" +
 	"\x0fCheckCompliance\x12\x17.clausia.ExtractRequest\x1a .clausia.CheckComplianceResponse\x123\n" +
 	"\x04Chat\x12\x14.clausia.ChatRequest\x1a\x15.clausia.ChatResponseB9Z7github.com/Clausia-Ifest/clausia-server/proto;clausiapbb\x06proto3"
@@ -926,7 +944,7 @@ func file_clausia_proto_rawDescGZIP() []byte {
 	return file_clausia_proto_rawDescData
 }
 
-var file_clausia_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_clausia_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_clausia_proto_goTypes = []any{
 	(*FileContent)(nil),             // 0: clausia.FileContent
 	(*S3Reference)(nil),             // 1: clausia.S3Reference
@@ -934,38 +952,37 @@ var file_clausia_proto_goTypes = []any{
 	(*ExtractRequest)(nil),          // 3: clausia.ExtractRequest
 	(*ExtractResponse)(nil),         // 4: clausia.ExtractResponse
 	(*ExtractMetadataResponse)(nil), // 5: clausia.ExtractMetadataResponse
-	(*SummarizeResponse)(nil),       // 6: clausia.SummarizeResponse
-	(*RiskFinding)(nil),             // 7: clausia.RiskFinding
-	(*AnalyzeRiskResponse)(nil),     // 8: clausia.AnalyzeRiskResponse
-	(*ComplianceMatch)(nil),         // 9: clausia.ComplianceMatch
-	(*CheckComplianceResponse)(nil), // 10: clausia.CheckComplianceResponse
-	(*ChatRequest)(nil),             // 11: clausia.ChatRequest
-	(*ChatResponse)(nil),            // 12: clausia.ChatResponse
+	(*SummarizeRequest)(nil),        // 6: clausia.SummarizeRequest
+	(*SummarizeResponse)(nil),       // 7: clausia.SummarizeResponse
+	(*RiskFinding)(nil),             // 8: clausia.RiskFinding
+	(*AnalyzeRiskResponse)(nil),     // 9: clausia.AnalyzeRiskResponse
+	(*ComplianceMatch)(nil),         // 10: clausia.ComplianceMatch
+	(*CheckComplianceResponse)(nil), // 11: clausia.CheckComplianceResponse
+	(*ChatRequest)(nil),             // 12: clausia.ChatRequest
+	(*ChatResponse)(nil),            // 13: clausia.ChatResponse
 }
 var file_clausia_proto_depIdxs = []int32{
 	0,  // 0: clausia.ExtractRequest.file:type_name -> clausia.FileContent
 	1,  // 1: clausia.ExtractRequest.s3_ref:type_name -> clausia.S3Reference
-	7,  // 2: clausia.AnalyzeRiskResponse.findings:type_name -> clausia.RiskFinding
-	9,  // 3: clausia.CheckComplianceResponse.matches:type_name -> clausia.ComplianceMatch
-	0,  // 4: clausia.ChatRequest.file:type_name -> clausia.FileContent
-	1,  // 5: clausia.ChatRequest.s3_ref:type_name -> clausia.S3Reference
-	3,  // 6: clausia.ClausIA.Extract:input_type -> clausia.ExtractRequest
-	3,  // 7: clausia.ClausIA.ExtractMetadata:input_type -> clausia.ExtractRequest
-	3,  // 8: clausia.ClausIA.Summarize:input_type -> clausia.ExtractRequest
-	3,  // 9: clausia.ClausIA.AnalyzeRisk:input_type -> clausia.ExtractRequest
-	3,  // 10: clausia.ClausIA.CheckCompliance:input_type -> clausia.ExtractRequest
-	11, // 11: clausia.ClausIA.Chat:input_type -> clausia.ChatRequest
-	4,  // 12: clausia.ClausIA.Extract:output_type -> clausia.ExtractResponse
-	5,  // 13: clausia.ClausIA.ExtractMetadata:output_type -> clausia.ExtractMetadataResponse
-	6,  // 14: clausia.ClausIA.Summarize:output_type -> clausia.SummarizeResponse
-	8,  // 15: clausia.ClausIA.AnalyzeRisk:output_type -> clausia.AnalyzeRiskResponse
-	10, // 16: clausia.ClausIA.CheckCompliance:output_type -> clausia.CheckComplianceResponse
-	12, // 17: clausia.ClausIA.Chat:output_type -> clausia.ChatResponse
-	12, // [12:18] is the sub-list for method output_type
-	6,  // [6:12] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	8,  // 2: clausia.AnalyzeRiskResponse.findings:type_name -> clausia.RiskFinding
+	10, // 3: clausia.CheckComplianceResponse.matches:type_name -> clausia.ComplianceMatch
+	3,  // 4: clausia.ClausIA.Extract:input_type -> clausia.ExtractRequest
+	3,  // 5: clausia.ClausIA.ExtractMetadata:input_type -> clausia.ExtractRequest
+	6,  // 6: clausia.ClausIA.Summarize:input_type -> clausia.SummarizeRequest
+	3,  // 7: clausia.ClausIA.AnalyzeRisk:input_type -> clausia.ExtractRequest
+	3,  // 8: clausia.ClausIA.CheckCompliance:input_type -> clausia.ExtractRequest
+	12, // 9: clausia.ClausIA.Chat:input_type -> clausia.ChatRequest
+	4,  // 10: clausia.ClausIA.Extract:output_type -> clausia.ExtractResponse
+	5,  // 11: clausia.ClausIA.ExtractMetadata:output_type -> clausia.ExtractMetadataResponse
+	7,  // 12: clausia.ClausIA.Summarize:output_type -> clausia.SummarizeResponse
+	9,  // 13: clausia.ClausIA.AnalyzeRisk:output_type -> clausia.AnalyzeRiskResponse
+	11, // 14: clausia.ClausIA.CheckCompliance:output_type -> clausia.CheckComplianceResponse
+	13, // 15: clausia.ClausIA.Chat:output_type -> clausia.ChatResponse
+	10, // [10:16] is the sub-list for method output_type
+	4,  // [4:10] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_clausia_proto_init() }
@@ -977,17 +994,13 @@ func file_clausia_proto_init() {
 		(*ExtractRequest_File)(nil),
 		(*ExtractRequest_S3Ref)(nil),
 	}
-	file_clausia_proto_msgTypes[11].OneofWrappers = []any{
-		(*ChatRequest_File)(nil),
-		(*ChatRequest_S3Ref)(nil),
-	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_clausia_proto_rawDesc), len(file_clausia_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
