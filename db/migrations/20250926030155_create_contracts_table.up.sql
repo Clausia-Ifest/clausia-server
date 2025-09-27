@@ -5,6 +5,8 @@ CREATE TABLE contracts (
     title VARCHAR(255) NOT NULL,
     company VARCHAR(255) NOT NULL,
     notes TEXT,
+    risk_detection TEXT,
+    summarize TEXT,
     risk_level SMALLINT NOT NULL DEFAULT 0,
     status SMALLINT NOT NULL DEFAULT 0,
     application_status SMALLINT NOT NULL DEFAULT 0,
