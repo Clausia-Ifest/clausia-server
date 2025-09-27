@@ -9,6 +9,24 @@ import (
 	"github.com/google/uuid"
 )
 
+func (h *HContract) Validate(c *fiber.Ctx) error {
+	ctx := c.UserContext()
+
+	doc, err := c.FormFile("document")
+	if err != nil {
+		return err
+	}
+
+	if err := h.uc.Validate(ctx, doc); err != nil {
+		return err
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"verified": true,
+	})
+
+}
+
 func (h *HContract) Chat(c *fiber.Ctx) error {
 	ctx := c.UserContext()
 
@@ -29,7 +47,9 @@ func (h *HContract) Chat(c *fiber.Ctx) error {
 		return err
 	}
 
-	return c.Status(http.StatusOK).JSON(p)
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"answer": p,
+	})
 }
 
 func (h *HContract) Logs(c *fiber.Ctx) error {

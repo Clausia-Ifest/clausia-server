@@ -20,6 +20,19 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+func (u *UContract) Validate(ctx context.Context, document *multipart.FileHeader) error {
+	hash, err := hashSHA256(document)
+	if err != nil {
+		return err
+	}
+
+	if err := u.blockchain.Check(hash); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (u *UContract) Chat(ctx context.Context, req dto.ChatRequest) (string, error) {
 	tx, err := u.tx.Begin(ctx, true)
 	if err != nil {
@@ -114,6 +127,12 @@ func (u *UContract) Update(ctx context.Context, req dto.UpdateContractRequest) e
 			Notes:             req.Notes,
 			Summarize:         string(j),
 		}
+
+		// hash legal document, insert into blockchain
+
+		// if _contract.Status == enum.StatusSuccess {
+		// 	u.blockchain.Insert()
+		// }
 	} else {
 		ap := enum.ParseAS(req.ApplicationStatus)
 		if ap != enum.ASManager {

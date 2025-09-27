@@ -2,6 +2,7 @@ package contract
 
 import (
 	"context"
+	"mime/multipart"
 
 	"github.com/Clausia-Ifest/clausia-server/internal/domain/dto"
 	"github.com/Clausia-Ifest/clausia-server/internal/domain/entity"
@@ -24,4 +25,5 @@ type IUContract interface {
 	Update(ctx context.Context, req dto.UpdateContractRequest) error
 	Get(ctx context.Context, id uuid.UUID) (*dto.Contract, error)
 	Chat(ctx context.Context, req dto.ChatRequest) (string, error)
+	Validate(ctx context.Context, document *multipart.FileHeader) error
 }

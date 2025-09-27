@@ -33,6 +33,7 @@ const (
 	StatusRejected Status = -1
 	StatusWaiting  Status = 0
 	StatusAccepted Status = 1
+	StatusSuccess  Status = 10
 )
 
 var (
@@ -41,12 +42,14 @@ var (
 		StatusRejected: "Rejected",
 		StatusWaiting:  "Waiting",
 		StatusAccepted: "Accepted",
+		StatusSuccess:  "Success",
 	}
 	KeyStatusMap = map[string]Status{
 		"Unknown":  StatusUnknown,
 		"Rejected": StatusRejected,
 		"Waiting":  StatusWaiting,
 		"Accepted": StatusAccepted,
+		"Success":  StatusSuccess,
 	}
 )
 

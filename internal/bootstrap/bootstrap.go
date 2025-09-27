@@ -12,6 +12,7 @@ import (
 	huser "github.com/Clausia-Ifest/clausia-server/internal/app/user/handler"
 	ruser "github.com/Clausia-Ifest/clausia-server/internal/app/user/repository"
 	uuser "github.com/Clausia-Ifest/clausia-server/internal/app/user/usecase"
+	"github.com/Clausia-Ifest/clausia-server/internal/infra/blockchain"
 	"github.com/Clausia-Ifest/clausia-server/internal/infra/config"
 	"github.com/Clausia-Ifest/clausia-server/internal/infra/db"
 	rpc "github.com/Clausia-Ifest/clausia-server/internal/infra/grpc"
@@ -91,6 +92,7 @@ func (app *App) health() {
 func (app *App) registerRoutes() {
 	transactor := transactor.New(app.db.GetConnection())
 	queryBuilder := querybuilder.New()
+	blockchain := blockchain.New(app.config.WEB3InfuraRPC, app.config.WEB3PrivateKey, app.config.WEB3ContractAddress)
 
 	val10 := validator.New()
 	hash := hash.New()
@@ -106,7 +108,7 @@ func (app *App) registerRoutes() {
 	handlerDocument := hdocument.New(val10, middleware, usecaseDocument)
 
 	repositoryContract := rcontract.New(queryBuilder)
-	usecaseContract := ucontract.New(transactor, app.s3, app.grpc, repositoryContract, repositoryDocument)
+	usecaseContract := ucontract.New(transactor, app.s3, app.grpc, blockchain, repositoryContract, repositoryDocument)
 	handlerContract := hcontract.New(val10, middleware, usecaseContract)
 
 	router := app.server.Group("")

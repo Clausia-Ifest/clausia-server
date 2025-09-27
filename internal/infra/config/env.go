@@ -38,12 +38,19 @@ type GRPC struct {
 	GRPCPort int    `env:"GRPC_PORT,required"`
 }
 
+type WEB3 struct {
+	WEB3PrivateKey      string `env:"WEB3_PRIVATE_KEY,required"`
+	WEB3InfuraRPC       string `env:"WEB3_INFURA_RPC,required"`
+	WEB3ContractAddress string `env:"WEB3_CONTRACT_ADDRESS,required"`
+}
+
 type Env struct {
 	App
 	DB
 	JWT
 	Storage
 	GRPC
+	WEB3
 }
 
 func Load() (*Env, error) {
