@@ -5,6 +5,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -19,30 +20,113 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+func (u *UContract) Chat(ctx context.Context, req dto.ChatRequest) (string, error) {
+	tx, err := u.tx.Begin(ctx, true)
+	if err != nil {
+		return "", err
+	}
+	defer func() {
+		if err := tx.Rollback(); err != nil {
+			return
+		}
+	}()
+
+	params := dto.GetContractParams{
+		ID: req.ContractID,
+	}
+
+	_, err = u.rc.Get(ctx, tx.E, params)
+	if err != nil {
+		return "", err
+	}
+
+	p, err := u.grpc.Chat(ctx, &clausiapb.ChatRequest{
+		ContractId: req.ContractID.String(),
+		Question:   req.Message,
+	})
+	if err != nil {
+		return "", err
+	}
+
+	var cht entity.Chat
+
+	cht = entity.Chat{
+		ID:       uuid.New(),
+		Content:  req.Message,
+		IsAnswer: false,
+	}
+	if err := u.rc.CreateChatHistory(ctx, tx.E, cht); err != nil {
+		return "", err
+	}
+
+	cht = entity.Chat{
+		ID:       uuid.New(),
+		Content:  p.Answer,
+		IsAnswer: true,
+	}
+	if err := u.rc.CreateChatHistory(ctx, tx.E, cht); err != nil {
+		return "", err
+	}
+
+	if err := tx.Commit(); err != nil {
+		return "", err
+	}
+
+	return p.Answer, nil
+}
+
 func (u *UContract) Update(ctx context.Context, req dto.UpdateContractRequest) error {
 	tx, err := u.tx.Begin(ctx, false)
 	if err != nil {
 		return err
 	}
 
-	ap := enum.ParseAS(req.ApplicationStatus)
-	if ap != enum.ASManager {
-		return errors.New("application status not found")
+	params := dto.GetContractParams{
+		ID: req.ID,
 	}
 
-	st := enum.ParseStatus(req.Status)
-	if st != enum.StatusRejected && st != enum.StatusAccepted {
-		return errors.New("status not found")
+	_, err = u.rc.Get(ctx, tx.E, params)
+	if err != nil {
+		return err
 	}
 
-	_contract := &entity.Contract{
-		ID:                req.ID,
-		ApplicationStatus: ap,
-		Status:            st,
-		Notes:             req.Notes,
+	var _contract entity.Contract
+
+	if req.UserRole == enum.RoleManager.String() {
+		st := enum.ParseStatus(req.Status)
+		if st != enum.StatusRejected && st != enum.StatusAccepted {
+			return errors.New("status not found")
+		}
+
+		p, err := u.grpc.Summarize(ctx, &clausiapb.SummarizeRequest{
+			ContractId: req.ID.String(),
+		})
+		if err != nil {
+			return err
+		}
+
+		j, _ := json.Marshal(p)
+
+		_contract = entity.Contract{
+			ID:                req.ID,
+			ApplicationStatus: enum.ASManager,
+			Status:            st,
+			Notes:             req.Notes,
+			Summarize:         string(j),
+		}
+	} else {
+		ap := enum.ParseAS(req.ApplicationStatus)
+		if ap != enum.ASManager {
+			return errors.New("application status not found")
+		}
+
+		_contract = entity.Contract{
+			ID:                req.ID,
+			ApplicationStatus: ap,
+		}
 	}
 
-	if err := u.rc.Update(ctx, tx.E, _contract); err != nil {
+	if err := u.rc.Update(ctx, tx.E, &_contract); err != nil {
 		return err
 	}
 
@@ -177,7 +261,7 @@ func (u *UContract) Submit(ctx context.Context, req dto.SubmitContractRequest) e
 					},
 				})
 				if err != nil {
-					log.Err(err).Str("hash", hash).Msg("failed to hit ai")
+					log.Err(err).Str("hash", hash).Msg("failed to hit ai - extract")
 					return
 				}
 
@@ -190,6 +274,29 @@ func (u *UContract) Submit(ctx context.Context, req dto.SubmitContractRequest) e
 				if err := u.rd.Create(ctxNoCancel, notx.E, *_document); err != nil {
 					log.Err(err).Str("hash", hash).Msg("failed store to db")
 					return
+				}
+
+				if c == 1 && newContract.RiskDetection == "" {
+					risk, err := u.grpc.AnalyzeRisk(ctxNoCancel, &clausiapb.ExtractRequest{
+						Source: &clausiapb.ExtractRequest_S3Ref{
+							S3Ref: &clausiapb.S3Reference{
+								ObjectKey: hash,
+							},
+						},
+					})
+					if err != nil {
+						log.Err(err).Str("hash", hash).Msg("failed to hit ai - analyze")
+						return
+					}
+
+					j, _ := json.Marshal(risk)
+					newContract.RiskDetection = string(j)
+					newContract.RiskLevel = enum.RiskLevel(risk.GetRiskLevel())
+
+					if err := u.rc.Update(ctxNoCancel, notx.E, &newContract); err != nil {
+						log.Err(err).Str("hash", hash).Msg("failed to update")
+						return
+					}
 				}
 
 				c := enum.DocumentCategory(c)
@@ -218,4 +325,22 @@ func (u *UContract) Submit(ctx context.Context, req dto.SubmitContractRequest) e
 	}
 
 	return nil
+}
+
+func (u *UContract) Get(ctx context.Context, id uuid.UUID) (*dto.Contract, error) {
+	tx, err := u.tx.Begin(ctx, false)
+	if err != nil {
+		return nil, err
+	}
+
+	params := dto.GetContractParams{
+		ID: id,
+	}
+
+	contract, err := u.rc.Get(ctx, tx.E, params)
+	if err != nil {
+		return nil, err
+	}
+
+	return contract.ParseDTO(), nil
 }
