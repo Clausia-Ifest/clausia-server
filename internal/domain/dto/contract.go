@@ -16,6 +16,8 @@ type Contract struct {
 	Title             string    `json:"title"`
 	Company           string    `json:"company"`
 	Notes             string    `json:"notes"`
+	RiskDetection     string    `json:"risk_detection"`
+	Summarize         string    `json:"summarize"`
 	RiskLevel         string    `json:"risk_level"`
 	Status            string    `json:"status"`
 	ApplicationStatus string    `json:"application_status"`
@@ -24,6 +26,7 @@ type Contract struct {
 	EndDate           time.Time `json:"end_date"`
 
 	Documents []Document `json:"documents"`
+	Chats     []Chat     `json:"chats"`
 }
 
 type SubmitContractRequest struct {
@@ -56,6 +59,7 @@ type AllContractResponse struct {
 }
 
 type GetContractParams struct {
+	ID                uuid.UUID              `db:"id"`
 	StartDate         time.Time              `db:"-"`
 	EndDate           time.Time              `db:"-"`
 	Category          enum.Category          `db:"category"`
@@ -68,4 +72,5 @@ type UpdateContractRequest struct {
 	ApplicationStatus string `json:"application_status"`
 	Status            string `json:"status"`
 	Notes             string `json:"notes"`
+	UserRole          string `json:"-"`
 }
