@@ -1,0 +1,9 @@
+CREATE TABLE chats (
+    id UUID PRIMARY KEY,
+    content TEXT NOT NULL,
+    is_answer BOOL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    contract_id UUID DEFAULT NULL,
+    CONSTRAINT fk_chats_contracts FOREIGN KEY (contract_id) REFERENCES contracts(id) ON DELETE CASCADE
+);
