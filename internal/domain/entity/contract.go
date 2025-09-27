@@ -15,6 +15,8 @@ type Contract struct {
 	Title             string                 `db:"title"`
 	Company           string                 `db:"company"`
 	Notes             string                 `db:"notes"`
+	RiskDetection     string                 `db:"risk_detection"`
+	Summarize         string                 `db:"summarize"`
 	RiskLevel         enum.RiskLevel         `db:"risk_level"`
 	Status            enum.Status            `db:"status"`
 	ApplicationStatus enum.ApplicationStatus `db:"application_status"`
@@ -25,6 +27,7 @@ type Contract struct {
 	UpdatedAt         time.Time              `db:"updated_at"`
 
 	ContractDocument []ContractDocument `db:"contract_document"`
+	ContractChats    []Chat             `db:"chats"`
 }
 
 func (e *Contract) ParseDTO() *dto.Contract {
@@ -35,6 +38,8 @@ func (e *Contract) ParseDTO() *dto.Contract {
 		Title:             e.Title,
 		Company:           e.Company,
 		Notes:             e.Notes,
+		RiskDetection:     e.RiskDetection,
+		Summarize:         e.Summarize,
 		RiskLevel:         e.RiskLevel.String(),
 		Status:            e.Status.String(),
 		ApplicationStatus: e.ApplicationStatus.String(),
@@ -48,6 +53,8 @@ func (e *Contract) ParseDTO() *dto.Contract {
 	for _, d := range e.ContractDocument {
 		r.Documents = append(r.Documents, dto.Document{
 			Hash:     d.DocumentHash,
+			Content:  d.Content,
+			MetaData: d.MetaData,
 			URL:      d.URL,
 			Category: d.Category.String(),
 		})
